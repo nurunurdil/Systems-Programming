@@ -33,6 +33,7 @@ static void setOption(char opt) {
 			break;
 		case 'c':
 			option = option | (1<<4);
+			option = option & (65535 ^ (1<<13)); // overrides the -u bit to zero using a bit mask
 			break;
 		case 'd':
 			option = option | (1<<5);
@@ -60,6 +61,7 @@ static void setOption(char opt) {
 			break;
 		case 'u':
 			option = option | (1<<13);
+			option = option & (65535 ^ (1<<4)); // overrides the -c bit to zero using a bit mask			
 			break;	
 	}
 }
