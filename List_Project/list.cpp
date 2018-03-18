@@ -8,13 +8,18 @@
 #include <dirent.h>
 #include <pwd.h>
 
-short option = 0;
+#define FALSE 0
+#define TRUE 1
+
+
+short option = 0; //this short integer stores information about the selected options
+int optionWarning = FALSE; // this boolean is needed to know if displaying a warning about the options limitation is required
 char *path;
 char *fileName;
-void setOption(char opt);
+static void setOption(char opt);
 
 //Set the option of the ls command
-static void setOption(char opt) {
+void setOption(char opt) {
 	switch(opt){
 		//Upper-case letters set the last 3 bits of the short number 'option'
 		case 'A':
@@ -62,7 +67,9 @@ static void setOption(char opt) {
 		case 'u':
 			option = option | (1<<13);
 			option = option & (65535 ^ (1<<4)); // overrides the -c bit to zero using a bit mask			
-			break;	
+			break;
+		default:
+			optionWarning = TRUE;	
 	}
 }
 
@@ -93,8 +100,8 @@ int		main(int argc, char *argv []) {
 		setOption(opt);
 	}
 
-
+	if(optionWarning==TRUE)
+		printf("Only AacdFfhilnRrStu are used as options for the scope of this project\n");
 	int fileNeeded = checkFileNameNecessity(option, argc);
 	getList(fileNeeded, fileName);
-	
 }
