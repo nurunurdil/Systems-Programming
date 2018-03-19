@@ -3,6 +3,7 @@
 */
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <dirent.h>
@@ -14,9 +15,28 @@
 
 short option = 0; //this short integer stores information about the selected options
 int optionWarning = FALSE; // this boolean is needed to know if displaying a warning about the options limitation is required
+int statValue;
 char *path;
 char *fileName;
 static void setOption(char opt);
+static void addFileToList(struct stat *statValue, char * path);
+
+
+struct fileEntry{
+	char path[255];
+	char fileType;
+	int linksCount;
+	long inodeNumber;
+};
+
+//In fact this method adds info (stat) about a file to the list. Not the file itself.
+//Named addFileToList in order to be more convenient.
+void addFileToList(struct stat *statValue, char * path){
+	
+
+
+}
+
 
 //Set the option of the ls command
 void setOption(char opt) {
@@ -85,19 +105,22 @@ static void getList(int fileNeeded, char *fileName) {
 
 int		main(int argc, char *argv []) {
 	int opt;
-	//The following is the main class for the 'LS' project in Systems Programming class
+	struct stat buf;
 
-	/*
-	//Checking the number of inputted parameters
-	if (argc < 1) {
-		printf("Not enough parameters for list function\n");
-		//exit(1);
-		return 0;
-	}
-	*/
-
+	//set the option for each paramaeter
 	while((opt = getopt(argc,argv,"AacdFfhilnRrStu")) != -1){
 		setOption(opt);
+	}
+
+	if(argc==1){
+		if(option==32){
+			statValue = lstat(".",&buf);
+			if(statValue<0){
+				fprintf(stderr,"LStat error occured\n");
+				exit(1);
+			}
+		addFileToList(&buf,".");
+		}
 	}
 
 	if(optionWarning==TRUE)
