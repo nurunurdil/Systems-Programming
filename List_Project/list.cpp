@@ -113,7 +113,8 @@ int		main(int argc, char *argv []) {
 	}
 
 	if(argc==1){
-		if(option==32){
+		//This is how we check if the -d flag is set. The -d flag is the 5th. Therefore 2^5=32.
+		if(option > (option ^ 32)){
 			statValue = lstat(".",&buf);
 			if(statValue<0){
 				fprintf(stderr,"LStat error occured\n");
