@@ -122,10 +122,27 @@ int		main(int argc, char *argv []) {
 			}
 		addFileToList(&buf,".");
 		}
+
+		//R Functionality
+		if(option > (option ^ 2)){
+			if((fd = open("."))<0){
+				fprintf(stderr, "Open error occured\n");
+				close(fd);
+				exit(1);
+			}
+
+			if(close(fd) == -1){
+				fprintf(stderr, "Close error occured\n");
+				exit(1);
+			}
+		}
+
 	}
 
 	if(optionWarning==TRUE)
 		printf("Only AacdFfhilnRrStu are used as options for the scope of this project\n");
 	int fileNeeded = checkFileNameNecessity(option, argc);
 	getList(fileNeeded, fileName);
+
+	exit(0);
 }
